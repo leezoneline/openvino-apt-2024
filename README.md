@@ -15,10 +15,13 @@ bash openvino_apt_install_2024.sh
 # 或“仅运行时”别名（APT 仓库无 openvino-runtime 独立包，会安装 openvino 元包）
 bash openvino_apt_install_2024.sh runtime
 
-# 安装完成后让环境变量生效
-exec zsh -l
+# 可选：临时加载环境（通常用于 Python 示例；C++/CLI 不需要）
+source /opt/intel/openvino/setupvars.sh
 
-# 验证
+# 可选：持久化加载（默认不写入）
+# OV_SETUP_PERSIST=1 bash openvino_apt_install_2024.sh
+
+# 验证（CLI + Python）
 benchmark_app -h | head
 python3 -c 'import openvino as ov; print(ov.runtime.get_version())'
 ```
@@ -34,6 +37,7 @@ python3 -c 'import openvino as ov; print(ov.runtime.get_version())'
 - OpenVINO 2024.x（当前仓库默认安装最新，如 2024.6）
 
 ## 故障排查
+- 如你不使用 Python，setupvars.sh 可能提示未找到 Python 环境的警告，属正常，可忽略。
 - 若之前使用 apt-key 配置过旧源，首次 `apt update` 可能提示 legacy trusted.gpg，可忽略或手动清理。
 - 国内网络建议提前配置 Ubuntu 镜像站以提速，Intel 仓库仍需访问 `https://apt.repos.intel.com/`。
 

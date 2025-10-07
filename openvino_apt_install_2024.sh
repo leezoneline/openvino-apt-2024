@@ -79,13 +79,19 @@ fi
 echo "[INFO] Installing package: $PKG ..."
 sudo apt install -y "$PKG"
 
-# 配置环境变量（zsh）
+# 配置环境变量（可选）
 if [[ -f /opt/intel/openvino/setupvars.sh ]]; then
-  if ! grep -qs "source /opt/intel/openvino/setupvars.sh" "${HOME}/.zshrc"; then
-    echo 'source /opt/intel/openvino/setupvars.sh' >> "${HOME}/.zshrc"
-    echo "[INFO] Added setupvars.sh to ~/.zshrc"
+  if [[ "${OV_SETUP_PERSIST:-0}" == "1" ]]; then
+    # 按需持久化写入（默认不写入，避免影响纯 C++/系统级使用）
+    if ! grep -qs "source /opt/intel/openvino/setupvars.sh" "${HOME}/.zshrc"; then
+      echo 'source /opt/intel/openvino/setupvars.sh' >> "${HOME}/.zshrc"
+      echo "[INFO] Added setupvars.sh to ~/.zshrc (because OV_SETUP_PERSIST=1)"
+    fi
+  else
+    echo "[INFO] Tip: 仅在需要时临时加载 OpenVINO 环境:"
+    echo "       source /opt/intel/openvino/setupvars.sh"
+    echo "       (如仅使用 C++/CLI，通常无需加载 Python 环境)"
   fi
-  echo "[INFO] Tip: 运行 'exec zsh -l' 以在当前终端加载 OpenVINO 环境变量。"
 fi
 
 # 验证工具是否可用
