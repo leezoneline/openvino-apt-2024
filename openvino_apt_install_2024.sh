@@ -34,7 +34,7 @@ case "$VERSION_ID_MAJOR" in
   20) OV_REPO_DIST=ubuntu20 ;;
   18) OV_REPO_DIST=ubuntu18 ;;
   *) echo "不支持的 Ubuntu 版本: $VERSION_ID_MAJOR" >&2; exit 1 ;;
-end
+esac
 
 echo "[INFO] Detected: Ubuntu $VERSION_ID (codename: ${CODENAME:-unknown}) => repo dist: $OV_REPO_DIST"
 
