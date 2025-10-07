@@ -1,0 +1,11 @@
+# macOS/Linux
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Python venvs
+.venv/
+venv/
